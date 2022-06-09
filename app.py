@@ -16,7 +16,7 @@ def perform_query():
     value2 = request.args['value2'] or None
 
     if file_name is None:
-        return BadRequest
+        return BadRequest(description='Не задано имя  файла')
 
     file_path = Path.cwd() / 'data' / file_name
     if Path.exists(file_path):
@@ -27,7 +27,7 @@ def perform_query():
 
         return app.response_class(result, 200, content_type="text/plain")
     else:
-        return BadRequest
+        return BadRequest(description=f'Файл {file_name} не найден')
 
 
 if __name__ == "__main__":
