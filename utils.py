@@ -2,13 +2,6 @@ from typing import Iterable, Optional
 import re
 
 
-def get_search(reg, in_string: str) -> bool:
-    if reg.search(in_string) is None:
-        return False
-    else:
-        return True
-
-
 def query_builder(iterable_var: Iterable, cmd: Optional[str], value: Optional[str]) -> Iterable:
     mapped_data = map(lambda v: v.strip(), iterable_var)
 
@@ -20,8 +13,7 @@ def query_builder(iterable_var: Iterable, cmd: Optional[str], value: Optional[st
             return filter(lambda x: value in x, mapped_data)
         elif cmd == 'regex':
             regex = re.compile(value)
-            return filter(lambda x: get_search(regex, x), mapped_data)
-            # return filter(lambda x: regex.search(x), iterable_var)
+            return filter(lambda x: regex.search(x), mapped_data)
         elif cmd == 'map':
             arg = int(value)
             return map(lambda x: x.split(' ')[arg], mapped_data)
@@ -29,6 +21,6 @@ def query_builder(iterable_var: Iterable, cmd: Optional[str], value: Optional[st
             arg = int(value)
             return list(mapped_data)[:arg]
         elif cmd == 'sort':
-            reverse = True if value == 'desc' else False
+            reverse = value == 'desc'
             return sorted(iterable_var, reverse=reverse)
     return mapped_data

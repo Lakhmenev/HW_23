@@ -6,14 +6,22 @@ from utils import query_builder
 app = Flask(__name__)
 
 
-@app.route("/perform_query")
+@app.route("/perform_query", methods=['GET', 'POST'])
 def perform_query():
     # Принимаем данные из запроса
-    file_name = request.args['file_name'] or None
-    cmd1 = request.args['cmd1'] or None
-    value1 = request.args['value1'] or None
-    cmd2 = request.args['cmd2'] or None
-    value2 = request.args['value2'] or None
+    if request.method == 'POST':
+        data = request.json
+        file_name = data['file_name'] or None
+        cmd1 = data['cmd1'] or None
+        value1 = data['value1'] or None
+        cmd2 = data['cmd2'] or None
+        value2 = data['value2'] or None
+    else:
+        file_name = request.args['file_name'] or None
+        cmd1 = request.args['cmd1'] or None
+        value1 = request.args['value1'] or None
+        cmd2 = request.args['cmd2'] or None
+        value2 = request.args['value2'] or None
 
     if file_name is None:
         return BadRequest(description='Не задано имя  файла')
